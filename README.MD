@@ -1,8 +1,24 @@
 DEV ENVIRONMENT:
-To get up and running in dev server, clone repo and 'npm install' to install dependencies
+To get up and running in dev server, go to your projects folder, clone repo:
+
+   git clone https://github.com/stix2you/scema
+
+Go to directory:
+
+   cd scema
+
+Install dependencies:
+
+   npm install
+
+Launch dev server:
+
+   npm start
 
 
 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Project Brief: Scout Camp Event Management App (SCEMA)
 

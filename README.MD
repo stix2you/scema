@@ -15,10 +15,14 @@ Launch dev server:
 
    npm start
 
+-----------------------------------------------
+
+To install panda for the python csv converter script, first download and install current version of Python, be sure pip is installed and Python is part of system PATH, then in project terminal:
+
+   pip install panda
 
 
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------
 
 Project Brief: Scout Camp Event Management App (SCEMA)
 

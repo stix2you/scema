@@ -37,47 +37,92 @@ Ensure offline functionality with local data storage.
 Provide access to the program sheet in PDF format, downloadable to local storage.
 
 User Stories:
+
 As an organizer, I want to upload the camp schedule into the app so that all participants can view it.
+
 As an organizer, I want to edit the schedule within the app to make last-minute changes.
+
 As a participant, I want to view the entire schedule to know what events are planned.
+
 As a participant, I want to see my individual agenda based on my role (leader or support team) so I know what I need to do.
+
 As a participant, I want to receive notifications about upcoming events so I don't miss any activities.
+
 As an organizer, I want to reorder the schedule easily to reflect changes in the program.
+
 As a participant, I want to view detailed information about each event, including the start time, end time, description, location, and leader.
+
 As an organizer, I want the app to send notifications and updates to users automatically to keep everyone informed.
+
 As a participant, I want the app to work offline and update when an internet connection is available so I can access information anytime.
+
 As a participant, I want to access the program sheet for the entire activity in PDF format and download it to local storage.
 
+
 Features:
+
 Event Calendar: Multiple events on a calendar view, filterable and easy to navigate.
+
 Schedule Loading and Editing: Organizers can upload and modify the schedule within the app.
+
 Detailed Event View: Access detailed information about each event.
+
 Personal Agenda: Personalized view for each user showing relevant events.
+
 Notifications: Automatic alerts for upcoming events with physical and audible notifications.
+
 Offline Functionality: Local data storage with failover to a local IP if no internet is available.
+
 Data Synchronization: Pull data from Google Sheets and store it in the app's database.
+
 Minimalist UI/UX: Simple and unobtrusive design focusing on essential features.
+
 Program Sheet Access: View and download the program sheet in PDF format.
 
+
+
 UI/UX Design:
+
 Tabs across the bottom for "What's Next," "My Schedule," "Overall Schedule," and "Settings."
+
 Event details accessible by clicking on the event in the schedule.
+
 PDF or Google Docs for detailed information sheets.
+
 SEE USER FLOW DOCUMENT FOR DETAILS
 
+
+
 Backend:
+
 Cloud server to connect to Google Sheets and read contents for data storage.
+
 Periodic synchronization with Google Sheets to ensure data is up-to-date.
+
+
+
 Development Approach:
+
 Agile methodology with fixed cost and timeline, flexible functional scope.
+
 Regular meetings for sprint planning, review, and backlog management.
+
 Use of Trello for task management and tracking.
 
+
+
 Timeline:
+
 Two weeks for rough draft: Initial design and development of core features.
+
 End of September: Complete app development and testing.
+
 October: App ready for the next camp.
+
+
+
 Budget:
+
 To be defined based on the scope and complexity of the app.
 
 

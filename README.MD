@@ -1,9 +1,8 @@
 DEPLOYMENT:
 
-npm build 
-(build project in master)
+Deploy to gh-pages from master branch:
 npm run deploy
-(script in package.json to update gh-pages -- remain on master branch for work)
+(script in package.json to update gh-pages -- remain on master branch for editing/work)
 
 
 DEV ENVIRONMENT:

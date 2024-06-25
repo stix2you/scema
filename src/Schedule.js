@@ -6,7 +6,7 @@ const Schedule = () => {
    useEffect(() => {
       const fetchEvents = async () => {
          try {
-            const response = await fetch('/events.json');
+            const response = await fetch(`${process.env.PUBLIC_URL}/events.json`);
             if (!response.ok) {
                throw new Error('Network response was not ok');
             }

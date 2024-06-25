@@ -34,7 +34,7 @@ function App() {
                   <Route path="/my-schedule" element={<MySchedule userName="Fraser Hewson" groupSelections={groupSelections} />} />
                   <Route path="/event/:id" element={<EventDetails />} />
                   <Route path="/settings" element={<Settings groupSelections={groupSelections} setGroupSelections={setGroupSelections} />} />
-                  <Route path="*" element={<Navigate to="/schedule" />} />
+                  <Route path="*" element={<Navigate to="/now" />} />
                </Routes>
             </main>
             <nav className="bottom-nav">

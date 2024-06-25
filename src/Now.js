@@ -10,7 +10,7 @@ const Now = () => {
    useEffect(() => {
       const fetchEvents = async () => {
          try {
-            const response = await fetch('/events.json'); // Ensure this path is correct
+            const response = await fetch(`${process.env.PUBLIC_URL}/events.json`); // Ensure this path is correct
             if (!response.ok) {
                throw new Error('Network response was not ok');
             }

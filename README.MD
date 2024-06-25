@@ -2,7 +2,7 @@ DEPLOYMENT:
 
 Deploy to gh-pages from master branch:
 npm run deploy
-(script in package.json to update gh-pages -- remain on master branch for editing/work)
+(script in package.json to do a build, then update gh-pages -- remain on master branch for editing/work)
 
 
 DEV ENVIRONMENT:

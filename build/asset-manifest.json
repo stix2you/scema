@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.ec5d1a4d.css",
+    "main.js": "/static/js/main.f5255707.js",
+    "static/js/453.b593c962.chunk.js": "/static/js/453.b593c962.chunk.js",
+    "service-worker.js": "/service-worker.js",
+    "static/media/seam-bg.png": "/static/media/seam-bg.e833ae6f8123b3971e31.png",
+    "index.html": "/index.html",
+    "main.ec5d1a4d.css.map": "/static/css/main.ec5d1a4d.css.map",
+    "main.f5255707.js.map": "/static/js/main.f5255707.js.map",
+    "453.b593c962.chunk.js.map": "/static/js/453.b593c962.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ec5d1a4d.css",
+    "static/js/main.f5255707.js"
+  ]
+}

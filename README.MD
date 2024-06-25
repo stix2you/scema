@@ -1,5 +1,7 @@
 DEPLOYMENT:
 
+npm build 
+(build project in master)
 npm run deploy
 (script in package.json to update gh-pages -- remain on master branch for work)
 

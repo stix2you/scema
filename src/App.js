@@ -23,7 +23,7 @@ function App() {
       <Router>
          <div className="App">
             <header className="App-header">
-               <img src="./scouts-logo.png" className="App-logo" alt="Scouts Logo" />
+               
                <h1>Scout Camp Event Management App</h1>
             </header>
             <main>

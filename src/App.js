@@ -28,7 +28,7 @@ function App() {
             </header>
             <main>
                <Routes>
-                  <Route path="/" element={<Navigate to="/schedule" />} />
+                  <Route path="/" element={<Navigate to="/now" />} />
                   <Route path="/now" element={<Now />} />
                   <Route path="/schedule" element={<Schedule />} />
                   <Route path="/my-schedule" element={<MySchedule userName="Fraser Hewson" groupSelections={groupSelections} />} />

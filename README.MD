@@ -1,3 +1,9 @@
+DEPLOYMENT:
+
+npm run deploy
+(script in package.json to update gh-pages -- remain on master branch for work)
+
+
 DEV ENVIRONMENT:
 To get up and running in dev server, go to your projects folder, clone repo:
 

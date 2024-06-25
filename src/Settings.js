@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Settings = ({ groupSelections, setGroupSelections }) => {
    const [notificationsEnabled, setNotificationsEnabled] = useState(true);
    const [offlineModeEnabled, setOfflineModeEnabled] = useState(false);
+   const navigate = useNavigate();
 
    const handleNotificationsChange = () => {
       setNotificationsEnabled(!notificationsEnabled);
@@ -28,6 +30,10 @@ const Settings = ({ groupSelections, setGroupSelections }) => {
       'Special 1',
       'Special 2',
    ];
+
+   const handleQRScannerNavigation = () => {
+      navigate('/scan');
+   };
 
    return (
       <div className="settings">
@@ -64,6 +70,9 @@ const Settings = ({ groupSelections, setGroupSelections }) => {
                   {group}
                </label>
             ))}
+         </div>
+         <div className="setting-option">
+            <button onClick={handleQRScannerNavigation}>Go to QR Scanner</button>
          </div>
       </div>
    );

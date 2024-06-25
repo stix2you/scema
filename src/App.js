@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, NavLink } from 'react-router-dom';
 import { FaCalendarAlt, FaUser, FaQrcode, FaCog } from 'react-icons/fa';
-import QRScanner from './QRScanner';
+import Now from './Now';
 import Schedule from './Schedule';
 import MySchedule from './MySchedule';
 import EventDetails from './EventDetails';
@@ -29,7 +29,7 @@ function App() {
             <main>
                <Routes>
                   <Route path="/" element={<Navigate to="/schedule" />} />
-                  <Route path="/scan" element={<QRScanner />} />
+                  <Route path="/now" element={<Now />} />
                   <Route path="/schedule" element={<Schedule />} />
                   <Route path="/my-schedule" element={<MySchedule userName="Fraser Hewson" groupSelections={groupSelections} />} />
                   <Route path="/event/:id" element={<EventDetails />} />
@@ -38,6 +38,10 @@ function App() {
                </Routes>
             </main>
             <nav className="bottom-nav">
+               <NavLink to="/now" className="nav-link">
+                  <FaQrcode />
+                  <span>Now</span>
+               </NavLink>
                <NavLink to="/schedule" className="nav-link">
                   <FaCalendarAlt />
                   <span>Schedule</span>
@@ -45,10 +49,6 @@ function App() {
                <NavLink to="/my-schedule" className="nav-link">
                   <FaUser />
                   <span>My Schedule</span>
-               </NavLink>
-               <NavLink to="/scan" className="nav-link">
-                  <FaQrcode />
-                  <span>Scan QR</span>
                </NavLink>
                <NavLink to="/settings" className="nav-link">
                   <FaCog />

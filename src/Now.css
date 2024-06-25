@@ -1,0 +1,38 @@
+.now-container {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.now-section,
+.next-section,
+.schedule-section {
+   padding: 10px;
+}
+
+.now-section {
+   background-color: #f0f8ff;
+   /* Light blue */
+}
+
+.next-section {
+   background-color: #fffacd;
+   /* Light yellow */
+}
+
+.schedule-section {
+   background-color: #e6e6fa;
+   /* Light purple */
+}
+
+.event {
+   margin: 5px 0;
+}
+
+.event h3 {
+   margin: 0;
+}
+
+.event p {
+   margin: 2px 0;
+}

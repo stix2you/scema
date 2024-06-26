@@ -1,45 +1,35 @@
 /* eslint-disable no-restricted-globals */
 
-import { clientsClaim } from 'workbox-core';
-import { ExpirationPlugin } from 'workbox-expiration';
-import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
-import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
-
-clientsClaim();
-precacheAndRoute(self.__WB_MANIFEST);
-
-const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
-registerRoute(
-   ({ request, url }) => {
-      if (request.mode !== 'navigate') {
-         return false;
-      }
-      if (url.pathname.startsWith('/_')) {
-         return false;
-      }
-      if (url.pathname.match(fileExtensionRegexp)) {
-         return false;
-      }
-      return true;
-   },
-   createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
-);
-
-registerRoute(
-   ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.png'),
-   new StaleWhileRevalidate({
-      cacheName: 'images',
-      plugins: [new ExpirationPlugin({ maxEntries: 50 })],
-   })
-);
-
-self.addEventListener('message', (event) => {
-   if (event.data && event.data.type === 'SKIP_WAITING') {
-      self.skipWaiting();
-   }
+self.addEventListener('install', (event) => {
+   console.log('Service worker installing...');
+   self.skipWaiting();
 });
 
+self.addEventListener('activate', (event) => {
+   console.log('Service worker activating...');
+   event.waitUntil(self.clients.claim());
+});
+
+self.addEventListener('fetch', (event) => {
+   const url = new URL(event.request.url);
+
+   // Adjust URL paths if necessary
+   if (url.origin === location.origin) {
+      if (url.pathname === '/scema/') {
+         event.respondWith(caches.match('/index.html'));
+         return;
+      }
+   }
+
+   console.log('Fetching:', event.request.url);
+   event.respondWith(
+      caches.match(event.request).then((response) => {
+         return response || fetch(event.request);
+      })
+   );
+});
+
+// Handle push notifications
 self.addEventListener('push', (event) => {
    const data = event.data.json();
    const title = data.title || 'Notification';
@@ -51,6 +41,7 @@ self.addEventListener('push', (event) => {
    event.waitUntil(self.registration.showNotification(title, options));
 });
 
+// Handle notification click
 self.addEventListener('notificationclick', (event) => {
    event.notification.close();
    event.waitUntil(
@@ -69,6 +60,7 @@ self.addEventListener('notificationclick', (event) => {
 
 // Add an event listener for custom test push events
 self.addEventListener('message', (event) => {
+   console.log('Received message:', event.data);
    if (event.data && event.data.type === 'test-push') {
       const { title, body } = event.data;
       const options = {

@@ -16,7 +16,7 @@ const Now = ({ simulatedTime }) => {
    useEffect(() => {
       const fetchEvents = async () => {
          try {
-            const response = await fetch(`${process.env.PUBLIC_URL}/events.json`); // Ensure this path is correct
+            const response = await fetch('scema/events.json'); // Ensure this path is correct when deploying can cause errors
             if (!response.ok) {
                throw new Error('Network response was not ok');
             }

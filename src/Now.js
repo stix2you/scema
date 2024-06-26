@@ -16,7 +16,7 @@ const Now = ({ simulatedTime }) => {
    useEffect(() => {
       const fetchEvents = async () => {
          try {
-            const response = await fetch('scema/events.json'); // Ensure this path is correct when deploying can cause errors
+            const response = await fetch('scema/events.json'); // Ensure this path is correct
             if (!response.ok) {
                throw new Error('Network response was not ok');
             }
@@ -79,37 +79,42 @@ const Now = ({ simulatedTime }) => {
    }, []);
 
    useEffect(() => {
-      if (currentEvent || nextEvent) {
-         const checkNotificationTimes = () => {
-            const now = currentTime.getTime();
-            if (currentEvent) {
-               const endDiff = (currentEvent.end.getTime() - now) / 6000; // Time remaining in minutes
-               if (endDiff <= 5 && endDiff > 4) {
-                  showNotification('Current Event Ending Soon', '5 minutes remaining for ' + currentEvent.activity_type);
-                  vibratePhone();
-               }
-            }
+      const checkNotificationTimes = () => {
+         const now = currentTime.getTime();
 
-            if (nextEvent) {
-               const startDiff = (nextEvent.start.getTime() - now) / 6000; // Time until start in minutes
-               if (startDiff <= 5 && startDiff > 4) {
-                  showNotification('Next Event Starting Soon', '5 minutes until ' + nextEvent.activity_type);
-                  vibratePhone();
-               } else if (startDiff <= 0 && startDiff > -1) {
-                  showNotification('Event Starting', nextEvent.activity_type + ' is starting now.');
-                  vibratePhone();
-               }
+         if (currentEvent) {
+            const endDiff = (currentEvent.end.getTime() - now) / 60000; // Time remaining in minutes
+            if (endDiff <= 5 && endDiff > 4) {
+               showNotification('Current Event Ending Soon', '5 minutes remaining for ' + currentEvent.activity_type);
+               vibratePhone();
             }
-         };
+         }
 
-         const interval = setInterval(checkNotificationTimes, 60000); // Check every minute
-         return () => clearInterval(interval);
-      }
+         if (nextEvent) {
+            const startDiff = (nextEvent.start.getTime() - now) / 60000; // Time until start in minutes
+            if (startDiff <= 5 && startDiff > 4) {
+               showNotification('Next Event Starting Soon', '5 minutes until ' + nextEvent.activity_type);
+               vibratePhone();
+            } else if (startDiff <= 0 && startDiff > -1) {
+               showNotification('Event Starting', nextEvent.activity_type + ' is starting now.');
+               vibratePhone();
+            }
+         }
+      };
+
+      const interval = setInterval(checkNotificationTimes, 60000); // Check every minute
+      return () => clearInterval(interval);
    }, [currentEvent, nextEvent, currentTime]);
 
    const showNotification = (title, body) => {
       if (Notification.permission === 'granted') {
-         new Notification(title, { body });
+         navigator.serviceWorker.ready.then(registration => {
+            registration.showNotification(title, {
+               body,
+               icon: '/icon-192x192.png',
+               badge: '/badge-72x72.png'
+            });
+         });
       }
    };
 
@@ -164,7 +169,7 @@ const Now = ({ simulatedTime }) => {
                <h2>NEXT</h2>
                {nextEvent && (
                   <div className="timer">
-                     <FaClock /> starts in {timeDiffInHHMM(nextEvent.start)}
+                     <FaClock /> {timeDiffInHHMM(nextEvent.start)} starts in
                   </div>
                )}
             </div>

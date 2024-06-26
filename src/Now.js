@@ -169,7 +169,7 @@ const Now = ({ simulatedTime }) => {
                <h2>NEXT</h2>
                {nextEvent && (
                   <div className="timer">
-                     <FaClock /> {timeDiffInHHMM(nextEvent.start)} starts in
+                     <FaClock /> starts in {timeDiffInHHMM(nextEvent.start)}
                   </div>
                )}
             </div>

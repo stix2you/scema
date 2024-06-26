@@ -1,50 +1,62 @@
-.now-container {
-   display: flex;
-   flex-direction: column;
-   gap: 10px;
-}
-
-.now-section,
-.next-section,
-.coming-up-section {
+/* src/Schedule.css */
+.schedule {
    padding: 10px;
 }
 
-.now-section {
-   background-color: #f0f8ff;
-   /* Light blue */
-}
-
-.next-section {
-   background-color: #fffacd;
-   /* Light yellow */
-}
-
-.coming-up-section {
-   background-color: #e6e6fa;
-   /* Light purple */
-}
-
-.header {
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   margin-bottom: 10px;
-}
-
-.header h2 {
+.schedule h2 {
    margin: 0;
-}
+} 
 
-.timer {
+.sort-menu {
    display: flex;
-   align-items: center;
-   font-size: 14px;
-   color: #555;
+   justify-content: flex-end;
+   margin-bottom: 10px;
+   position: relative;
 }
 
-.timer svg {
-   margin-right: 5px;
+.sort-menu .FaSort {
+   font-size: 24px;
+   cursor: pointer;
+}
+
+.sort-options {
+   display: flex;
+   flex-direction: column;
+   position: absolute;
+   top: 30px;
+   right: 0;
+   background-color: #fff;
+   border: 1px solid #ddd;
+   border-radius: 4px;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   z-index: 1;
+}
+
+.sort-options button {
+   background-color: #4CAF50;
+   color: white;
+   border: none;
+   padding: 10px;
+   text-align: left;
+   text-decoration: none;
+   display: block;
+   font-size: 14px;
+   cursor: pointer;
+   border-radius: 0;
+}
+
+.sort-options button:hover {
+   background-color: #45a049;
+}
+
+.day-group {
+   margin-bottom: 15px;
+}
+
+.event-list {
+   display: flex;
+   flex-direction: column;
+   gap: 5px;
 }
 
 .event-card {
@@ -54,6 +66,11 @@
    padding: 8px;
    border-radius: 4px;
    font-size: 14px;
+}
+
+.event-card.no-event {
+   justify-content: center;
+   align-items: center;
 }
 
 .event-time {
@@ -111,6 +128,11 @@
 
 /* Responsive styling for mobile screens */
 @media (max-width: 600px) {
+   .sort-options button {
+      padding: 8px;
+      font-size: 12px;
+   }
+
    .event-card {
       padding: 8px;
       font-size: 12px;

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, NavLink } from 'react-router-dom';
-import { FaCalendarAlt, FaUser, FaQrcode, FaCog } from 'react-icons/fa';
+import { FaCalendarAlt, FaUser, FaCog, FaCalendarCheck } from 'react-icons/fa';
 import Now from './Now';
 import Schedule from './Schedule';
 import MySchedule from './MySchedule';
@@ -19,27 +19,63 @@ function App() {
       'Special 2': false,
    });
 
+   const [simulatedTime, setSimulatedTime] = useState(new Date('2024-06-22T14:30:00')); // Default simulated time
+   const [showPopup, setShowPopup] = useState(false);
+
+   useEffect(() => {
+      const interval = setInterval(() => {
+         setSimulatedTime((prevTime) => new Date(prevTime.getTime() + 1000));
+      }, 1000);
+
+      return () => clearInterval(interval);
+   }, []);
+
+   const handleTitleClick = () => {
+      setShowPopup(true);
+   };
+
+   const handleTimeChange = (event) => {
+      setSimulatedTime(new Date(event.target.value));
+   };
+
+   const handlePopupClose = () => {
+      setShowPopup(false);
+   };
+
+   const formatSimulatedTimeForInput = (date) => {
+      const offset = date.getTimezoneOffset();
+      const localDate = new Date(date.getTime() - (offset * 60 * 1000));
+      return localDate.toISOString().slice(0, 16);
+   };
+
+   const formatSimulatedTimeForDisplay = (date) => {
+      return date.toLocaleString('en-GB', { hour12: false });
+   };
+
    return (
       <Router>
          <div className="App">
             <header className="App-header">
-               
-               <h1>Scout Camp Event Management App</h1>
+               <h1 onClick={handleTitleClick}>SCEMA</h1>
+               <div className="simulated-time">
+                  <span>Simulated Time: </span>
+                  {formatSimulatedTimeForDisplay(simulatedTime)}
+               </div>
             </header>
             <main>
                <Routes>
                   <Route path="/" element={<Navigate to="/now" />} />
-                  <Route path="/now" element={<Now />} />
-                  <Route path="/schedule" element={<Schedule />} />
-                  <Route path="/my-schedule" element={<MySchedule userName="Fraser Hewson" groupSelections={groupSelections} />} />
-                  <Route path="/event/:id" element={<EventDetails />} />
+                  <Route path="/now" element={<Now simulatedTime={simulatedTime} />} />
+                  <Route path="/schedule" element={<Schedule simulatedTime={simulatedTime} />} />
+                  <Route path="/my-schedule" element={<MySchedule userName="Fraser Hewson" groupSelections={groupSelections} simulatedTime={simulatedTime} />} />
+                  <Route path="/event/:id" element={<EventDetails simulatedTime={simulatedTime} />} />
                   <Route path="/settings" element={<Settings groupSelections={groupSelections} setGroupSelections={setGroupSelections} />} />
                   <Route path="*" element={<Navigate to="/now" />} />
                </Routes>
             </main>
             <nav className="bottom-nav">
                <NavLink to="/now" className="nav-link">
-                  <FaQrcode />
+                  <FaCalendarCheck />
                   <span>Now</span>
                </NavLink>
                <NavLink to="/schedule" className="nav-link">
@@ -55,6 +91,20 @@ function App() {
                   <span>Settings</span>
                </NavLink>
             </nav>
+
+            {showPopup && (
+               <div className="popup">
+                  <div className="popup-content">
+                     <h2>Adjust Simulated Time</h2>
+                     <input
+                        type="datetime-local"
+                        value={formatSimulatedTimeForInput(simulatedTime)}
+                        onChange={handleTimeChange}
+                     />
+                     <button onClick={handlePopupClose}>Close</button>
+                  </div>
+               </div>
+            )}
          </div>
       </Router>
    );

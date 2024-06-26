@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './Now.css';
+import { FaClock } from 'react-icons/fa';
 
-const Now = () => {
+const Now = ({ simulatedTime }) => {
    const [events, setEvents] = useState([]);
    const [currentEvent, setCurrentEvent] = useState(null);
    const [nextEvent, setNextEvent] = useState(null);
    const [upcomingEvents, setUpcomingEvents] = useState([]);
+   const [currentTime, setCurrentTime] = useState(simulatedTime);
+
+   useEffect(() => {
+      setCurrentTime(simulatedTime);
+   }, [simulatedTime]);
 
    useEffect(() => {
       const fetchEvents = async () => {
@@ -17,9 +23,6 @@ const Now = () => {
             const data = await response.json();
             const activities = data['2024_weekend_events'][0].activities;
 
-            // Simulated current time for development purposes
-            const simulatedNow = new Date('2024-06-22T14:30:00'); // Change this to simulate different times
-
             // Adjust events to include full date for start and end times
             const adjustedActivities = activities.map(event => {
                const start = new Date(`2024-06-22T${event.start}:00`);
@@ -27,69 +30,180 @@ const Now = () => {
                return { ...event, start, end };
             });
 
-            console.log('Simulated Now:', simulatedNow);
+            console.log('Simulated Now:', currentTime);
             console.log('Fetched Events:', adjustedActivities);
 
-            // Determine the current and next events
-            const current = adjustedActivities.find(
-               (event) => event.start <= simulatedNow && event.end >= simulatedNow
-            );
-            const next = adjustedActivities.find(
-               (event) => event.start > simulatedNow
-            );
-            const upcoming = adjustedActivities
-               .filter((event) => event.start > simulatedNow)
-               .slice(0, 3); // Select the next three upcoming events
-
-            console.log('Current Event:', current);
-            console.log('Next Event:', next);
-            console.log('Upcoming Events:', upcoming);
-
-            setCurrentEvent(current);
-            setNextEvent(next);
-            setUpcomingEvents(upcoming);
+            setEvents(adjustedActivities);
          } catch (error) {
             console.error('Failed to fetch events:', error);
          }
       };
 
       fetchEvents();
+   }, [currentTime]);
+
+   useEffect(() => {
+      const interval = setInterval(() => {
+         setCurrentTime((prevTime) => new Date(prevTime.getTime() + 1000)); // Simulate time progression
+      }, 1000);
+      return () => clearInterval(interval);
    }, []);
+
+   useEffect(() => {
+      if (events.length > 0) {
+         const current = events.find(
+            (event) => event.start <= currentTime && event.end >= currentTime
+         );
+         const next = events.find(
+            (event) => event.start > currentTime
+         );
+         const upcoming = events
+            .filter((event) => event.start > currentTime)
+            .slice(0, 5); // Select the next five upcoming events
+
+         console.log('Current Event:', current);
+         console.log('Next Event:', next);
+         console.log('Upcoming Events:', upcoming);
+
+         setCurrentEvent(current);
+         setNextEvent(next);
+         setUpcomingEvents(upcoming);
+      }
+   }, [events, currentTime]);
+
+   useEffect(() => {
+      // Request notification permission
+      if (Notification.permission !== 'granted') {
+         Notification.requestPermission();
+      }
+   }, []);
+
+   useEffect(() => {
+      if (currentEvent || nextEvent) {
+         const checkNotificationTimes = () => {
+            const now = currentTime.getTime();
+            if (currentEvent) {
+               const endDiff = (currentEvent.end.getTime() - now) / 6000; // Time remaining in minutes
+               if (endDiff <= 5 && endDiff > 4) {
+                  showNotification('Current Event Ending Soon', '5 minutes remaining for ' + currentEvent.activity_type);
+                  vibratePhone();
+               }
+            }
+
+            if (nextEvent) {
+               const startDiff = (nextEvent.start.getTime() - now) / 6000; // Time until start in minutes
+               if (startDiff <= 5 && startDiff > 4) {
+                  showNotification('Next Event Starting Soon', '5 minutes until ' + nextEvent.activity_type);
+                  vibratePhone();
+               } else if (startDiff <= 0 && startDiff > -1) {
+                  showNotification('Event Starting', nextEvent.activity_type + ' is starting now.');
+                  vibratePhone();
+               }
+            }
+         };
+
+         const interval = setInterval(checkNotificationTimes, 60000); // Check every minute
+         return () => clearInterval(interval);
+      }
+   }, [currentEvent, nextEvent, currentTime]);
+
+   const showNotification = (title, body) => {
+      if (Notification.permission === 'granted') {
+         new Notification(title, { body });
+      }
+   };
+
+   const vibratePhone = () => {
+      if (navigator.vibrate) {
+         navigator.vibrate([200, 100, 200]); // Vibration pattern
+      }
+   };
+
+   const formatTime = (date) => {
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+   };
+
+   const timeDiffInHHMM = (endTime) => {
+      const diff = endTime - currentTime;
+      const hours = Math.floor(diff / 1000 / 60 / 60);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+   };
 
    return (
       <div className="now-container">
          <div className="now-section">
-            <h2>NOW</h2>
+            <div className="header">
+               <h2>NOW</h2>
+               {currentEvent && (
+                  <div className="timer">
+                     <FaClock /> {timeDiffInHHMM(currentEvent.end)} remaining
+                  </div>
+               )}
+            </div>
             {currentEvent ? (
-               <div className="event">
-                  <h3>{currentEvent.activity_type}</h3>
-                  <p>{currentEvent.end ? `${Math.round((currentEvent.end - new Date('2024-06-22T14:30:00')) / 60000)} mins remaining` : ''}</p>
-                  <p>Leader: {currentEvent.leader}</p>
-                  <p>Location: {currentEvent.location}</p>
+               <div className="event-card">
+                  <div className="event-time">
+                     <div className="start-time">{formatTime(currentEvent.start)}</div>
+                     <div className="to-time">to</div>
+                     <div className="end-time">{formatTime(currentEvent.end)}</div>
+                  </div>
+                  <div className="event-details">
+                     <h3>{currentEvent.activity_type}</h3>
+                     <p>{currentEvent.description}</p>
+                     <p><strong>Leader:</strong> {currentEvent.leader}</p>
+                     <p><strong>Support:</strong> {currentEvent.support}</p>
+                  </div>
                </div>
             ) : (
                <p>No ongoing event</p>
             )}
          </div>
          <div className="next-section">
-            <h2>NEXT</h2>
+            <div className="header">
+               <h2>NEXT</h2>
+               {nextEvent && (
+                  <div className="timer">
+                     <FaClock /> {timeDiffInHHMM(nextEvent.start)} starts in
+                  </div>
+               )}
+            </div>
             {nextEvent ? (
-               <div className="event">
-                  <h3>{nextEvent.activity_type}</h3>
-                  <p>in {Math.round((nextEvent.start - new Date('2024-06-22T14:30:00')) / 60000)} mins ({nextEvent.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})</p>
-                  <p>Leader: {nextEvent.leader}</p>
-                  <p>Location: {nextEvent.location}</p>
+               <div className="event-card">
+                  <div className="event-time">
+                     <div className="start-time">{formatTime(nextEvent.start)}</div>
+                     <div className="to-time">to</div>
+                     <div className="end-time">{formatTime(nextEvent.end)}</div>
+                  </div>
+                  <div className="event-details">
+                     <h3>{nextEvent.activity_type}</h3>
+                     <p>{nextEvent.description}</p>
+                     <p><strong>Leader:</strong> {nextEvent.leader}</p>
+                     <p><strong>Support:</strong> {nextEvent.support}</p>
+                  </div>
                </div>
             ) : (
                <p>No upcoming event</p>
             )}
          </div>
-         <div className="schedule-section">
-            <h2>SCHEDULE</h2>
+         <div className="coming-up-section">
+            <div className="header">
+               <h2>COMING UP</h2>
+            </div>
             {upcomingEvents.length > 0 ? (
                upcomingEvents.map((event, index) => (
-                  <div key={index} className="event">
-                     <p>{event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} {event.activity_type} @ {event.location}</p>
+                  <div key={index} className="event-card">
+                     <div className="event-time">
+                        <div className="start-time">{formatTime(event.start)}</div>
+                        <div className="to-time">to</div>
+                        <div className="end-time">{formatTime(event.end)}</div>
+                     </div>
+                     <div className="event-details">
+                        <h3>{event.activity_type}</h3>
+                        <p>{event.description}</p>
+                        <p><strong>Leader:</strong> {event.leader}</p>
+                        <p><strong>Support:</strong> {event.support}</p>
+                     </div>
                   </div>
                ))
             ) : (

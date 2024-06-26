@@ -6,47 +6,9 @@
    height: 100vh;
 }
 
-.App-logo {
-   width: 100%;
-   max-width: 200px;
-   height: auto;
-   margin: 0 auto;
-}
-
-.App-header {
-   background: url('../public/canvas-bg.png') repeat;
-   /* Tile the canvas background */
-   height: 120px;
-   position: relative;
-   padding: 5px 20px 60px;
-   /* Add padding to ensure the seam is visible */
-   color: rgb(67, 0, 94);
-   box-sizing: border-box;
-}
-
-.App-header::after {
-   content: '';
-   display: block;
-   width: 100%;
-   height: 40px;
-   margin-top: 120px;
-   /* Adjust the height to make the border thicker */
-   background: url('../public/seam-bg.png') repeat-x;
-   /* Add the seam background */
-   position: absolute;
-   bottom: -23px;
-   left: 0;
-}
-
-.App-header h1 {
-   font-size: 1.5rem;
-   margin-block-start: 0px;
-}
-
 main {
    flex-grow: 1;
-   padding: 0px;
-   /* Add top padding to push content below the seam */
+   padding: 0;
    overflow-y: auto;
    box-sizing: border-box;
 }
@@ -108,4 +70,58 @@ main {
    .App-header h1 {
       font-size: 1.2rem;
    }
+}
+
+/* Popup styling */
+.popup {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, 0.5);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.popup-content {
+   background: white;
+   padding: 20px;
+   border-radius: 8px;
+   text-align: center;
+}
+
+.popup-content h2 {
+   margin-top: 0;
+}
+
+.popup-content input {
+   margin-bottom: 10px;
+   padding: 5px;
+   font-size: 16px;
+}
+
+.popup-content button {
+   padding: 10px 20px;
+   font-size: 16px;
+   cursor: pointer;
+}
+
+/* New styles for header */
+.App-header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 10px;
+   background-color: #282c34;
+   color: white;
+}
+
+.App-header h1 {
+   cursor: pointer;
+}
+
+.simulated-time {
+   font-size: 14px;
 }

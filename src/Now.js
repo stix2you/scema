@@ -30,8 +30,8 @@ const Now = ({ simulatedTime }) => {
                return { ...event, start, end };
             });
 
-            console.log('Simulated Now:', currentTime);
-            console.log('Fetched Events:', adjustedActivities);
+            // console.log('Simulated Now:', currentTime);
+            // console.log('Fetched Events:', adjustedActivities);
 
             setEvents(adjustedActivities);
          } catch (error) {
@@ -61,9 +61,9 @@ const Now = ({ simulatedTime }) => {
             .filter((event) => event.start > currentTime)
             .slice(0, 5); // Select the next five upcoming events
 
-         console.log('Current Event:', current);
-         console.log('Next Event:', next);
-         console.log('Upcoming Events:', upcoming);
+         // console.log('Current Event:', current);
+         // console.log('Next Event:', next);
+         // console.log('Upcoming Events:', upcoming);
 
          setCurrentEvent(current);
          setNextEvent(next);
@@ -164,7 +164,7 @@ const Now = ({ simulatedTime }) => {
                <h2>NEXT</h2>
                {nextEvent && (
                   <div className="timer">
-                     <FaClock /> {timeDiffInHHMM(nextEvent.start)} starts in
+                     <FaClock /> starts in {timeDiffInHHMM(nextEvent.start)}
                   </div>
                )}
             </div>

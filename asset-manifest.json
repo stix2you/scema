@@ -1,17 +1,16 @@
 {
   "files": {
-    "main.css": "/scema/static/css/main.d7f214b1.css",
-    "main.js": "/scema/static/js/main.f4b96edc.js",
+    "main.css": "/scema/static/css/main.1c892362.css",
+    "main.js": "/scema/static/js/main.e96a566f.js",
     "static/js/453.b593c962.chunk.js": "/scema/static/js/453.b593c962.chunk.js",
     "service-worker.js": "/scema/service-worker.js",
-    "static/media/seam-bg.png": "/scema/static/media/seam-bg.e833ae6f8123b3971e31.png",
     "index.html": "/scema/index.html",
-    "main.d7f214b1.css.map": "/scema/static/css/main.d7f214b1.css.map",
-    "main.f4b96edc.js.map": "/scema/static/js/main.f4b96edc.js.map",
+    "main.1c892362.css.map": "/scema/static/css/main.1c892362.css.map",
+    "main.e96a566f.js.map": "/scema/static/js/main.e96a566f.js.map",
     "453.b593c962.chunk.js.map": "/scema/static/js/453.b593c962.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d7f214b1.css",
-    "static/js/main.f4b96edc.js"
+    "static/css/main.1c892362.css",
+    "static/js/main.e96a566f.js"
   ]
 }

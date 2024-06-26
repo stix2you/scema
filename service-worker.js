@@ -11,7 +11,22 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+   const url = new URL(event.request.url);
+
+   // Adjust URL paths if necessary
+   if (url.origin === location.origin) {
+      if (url.pathname === '/scema/') {
+         event.respondWith(caches.match('/index.html'));
+         return;
+      }
+   }
+
    console.log('Fetching:', event.request.url);
+   event.respondWith(
+      caches.match(event.request).then((response) => {
+         return response || fetch(event.request);
+      })
+   );
 });
 
 // Handle push notifications

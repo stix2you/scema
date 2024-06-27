@@ -52,32 +52,21 @@ function App() {
       return date.toLocaleString('en-GB', { hour12: false });
    };
 
-   const requestNotificationPermission = () => {
-      if (Notification.permission === 'default') {
-         Notification.requestPermission().then((permission) => {
-            if (permission === 'granted') {
-               console.log('Notification permission granted.');
-            } else {
-               console.log('Notification permission denied.');
-            }
-         });
-      } else if (Notification.permission === 'granted') {
-         console.log('Notification permission already granted.');
+   const requestNotificationPermission = async () => {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+         console.log('Notification permission granted.');
       } else {
          console.log('Notification permission denied.');
       }
    };
 
-   const sendTestNotification = () => {
-      if (Notification.permission === 'default') {
-         Notification.requestPermission().then((permission) => {
-            if (permission === 'granted') {
-               triggerTestNotification();
-            } else {
-               console.log('Notification permission denied.');
-            }
-         });
-      } else if (Notification.permission === 'granted') {
+   const sendTestNotification = async () => {
+      const permission = Notification.permission;
+      if (permission === 'default') {
+         await requestNotificationPermission();
+      }
+      if (Notification.permission === 'granted') {
          triggerTestNotification();
       } else {
          console.log('Notification permission denied.');
@@ -95,10 +84,6 @@ function App() {
          });
       }
    };
-
-   useEffect(() => {
-      requestNotificationPermission();
-   }, []);
 
    return (
       <Router>

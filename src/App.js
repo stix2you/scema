@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, NavLink } from 'react-router-dom';
-import { FaCalendarAlt, FaUser, FaCog, FaCalendarCheck } from 'react-icons/fa';
+import { FaCalendarAlt, FaUser, FaCog, FaCalendarCheck, FaBell } from 'react-icons/fa';
 import Now from './Now';
 import Schedule from './Schedule';
 import MySchedule from './MySchedule';
@@ -52,15 +52,30 @@ function App() {
       return date.toLocaleString('en-GB', { hour12: false });
    };
 
+   const sendTestNotification = () => {
+      if ('serviceWorker' in navigator && 'PushManager' in window) {
+         navigator.serviceWorker.ready.then((registration) => {
+            registration.active.postMessage({
+               type: 'test-push',
+               title: 'Test Notification',
+               body: 'This is a test notification.',
+            });
+         });
+      }
+   };
+
    return (
       <Router>
          <div className="App">
             <header className="App-header">
                <h1 onClick={handleTitleClick}>SCEMA</h1>
                <div className="simulated-time">
-                  <span>Simulated Time: </span>
+                  <span>Time: </span>
                   {formatSimulatedTimeForDisplay(simulatedTime)}
                </div>
+               <button className="test-notification-button" onClick={sendTestNotification}>
+                  <FaBell />
+               </button>
             </header>
             <main>
                <Routes>

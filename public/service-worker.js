@@ -1,31 +1,54 @@
 /* eslint-disable no-restricted-globals */
 
+// Event listener for the 'install' event
 self.addEventListener('install', (event) => {
    console.log('Service worker installing...');
    self.skipWaiting();
 });
 
+// Event listener for the 'activate' event
 self.addEventListener('activate', (event) => {
    console.log('Service worker activating...');
    event.waitUntil(self.clients.claim());
 });
 
+// Event listener for the 'fetch' event
 self.addEventListener('fetch', (event) => {
-   const url = new URL(event.request.url);
-
-   // Adjust URL paths if necessary
-   if (url.origin === location.origin) {
-      if (url.pathname === '/scema/') {
-         event.respondWith(caches.match('/index.html'));
-         return;
-      }
-   }
-
    console.log('Fetching:', event.request.url);
+
    event.respondWith(
-      caches.match(event.request).then((response) => {
-         return response || fetch(event.request);
-      })
+      caches.match(event.request)
+         .then((response) => {
+            // Return the cached response if found
+            if (response) {
+               return response;
+            }
+
+            // If not found in cache, fetch from the network
+            return fetch(event.request).then(
+               (networkResponse) => {
+                  if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+                     return networkResponse;
+                  }
+
+                  // Clone the response before caching it
+                  const responseToCache = networkResponse.clone();
+
+                  caches.open('my-cache')
+                     .then((cache) => {
+                        cache.put(event.request, responseToCache);
+                     });
+
+                  return networkResponse;
+               }
+            ).catch((error) => {
+               console.error('Fetching failed:', error);
+               throw error;
+            });
+         }).catch((error) => {
+            console.error('Caching failed:', error);
+            throw error;
+         })
    );
 });
 

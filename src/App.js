@@ -59,14 +59,17 @@ function App() {
       } else {
          console.log('Notification permission denied.');
       }
+      return permission;
    };
 
    const sendTestNotification = async () => {
       const permission = Notification.permission;
       if (permission === 'default') {
-         await requestNotificationPermission();
-      }
-      if (Notification.permission === 'granted') {
+         const result = await requestNotificationPermission();
+         if (result === 'granted') {
+            triggerTestNotification();
+         }
+      } else if (permission === 'granted') {
          triggerTestNotification();
       } else {
          console.log('Notification permission denied.');

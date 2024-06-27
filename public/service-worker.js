@@ -92,13 +92,17 @@ self.addEventListener('message', (event) => {
          badge: '/logo512.png',
       };
       console.log('Showing notification:', title, options);
-      self.registration.showNotification(title || 'Test Title', options)
-         .then(() => {
-            console.log('Notification displayed successfully.');
-         })
-         .catch((error) => {
-            console.error('Error displaying notification:', error);
-         });
+      if (Notification.permission === 'granted') {
+         self.registration.showNotification(title || 'Test Title', options)
+            .then(() => {
+               console.log('Notification displayed successfully.');
+            })
+            .catch((error) => {
+               console.error('Error displaying notification:', error);
+            });
+      } else {
+         console.error('No notification permission granted for this origin.');
+      }
    }
 });
 

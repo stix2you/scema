@@ -52,6 +52,22 @@ function App() {
       return date.toLocaleString('en-GB', { hour12: false });
    };
 
+   const requestNotificationPermission = () => {
+      if (Notification.permission === 'default') {
+         Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+               console.log('Notification permission granted.');
+            } else {
+               console.log('Notification permission denied.');
+            }
+         });
+      } else if (Notification.permission === 'granted') {
+         console.log('Notification permission already granted.');
+      } else {
+         console.log('Notification permission denied.');
+      }
+   };
+
    const sendTestNotification = () => {
       if ('serviceWorker' in navigator && 'PushManager' in window) {
          navigator.serviceWorker.ready.then((registration) => {
@@ -63,6 +79,10 @@ function App() {
          });
       }
    };
+
+   useEffect(() => {
+      requestNotificationPermission();
+   }, []);
 
    return (
       <Router>

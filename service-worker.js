@@ -88,8 +88,8 @@ self.addEventListener('message', (event) => {
       const { title, body } = event.data;
       const options = {
          body: body || 'Test body',
-         icon: '/icon-192x192.png',
-         badge: '/badge-72x72.png',
+         icon: '/logo192.png',
+         badge: '/logo512.png',
       };
       self.registration.showNotification(title || 'Test Title', options);
    }

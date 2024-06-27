@@ -69,6 +69,22 @@ function App() {
    };
 
    const sendTestNotification = () => {
+      if (Notification.permission === 'default') {
+         Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+               triggerTestNotification();
+            } else {
+               console.log('Notification permission denied.');
+            }
+         });
+      } else if (Notification.permission === 'granted') {
+         triggerTestNotification();
+      } else {
+         console.log('Notification permission denied.');
+      }
+   };
+
+   const triggerTestNotification = () => {
       if ('serviceWorker' in navigator && 'PushManager' in window) {
          navigator.serviceWorker.ready.then((registration) => {
             registration.active.postMessage({

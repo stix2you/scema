@@ -100,7 +100,7 @@ function App() {
       <Router>
          <div className="App">
             <header className="App-header">
-               <h1 onClick={handleTitleClick}>CEMA</h1>
+               <h1 onClick={handleTitleClick}>scema</h1>
                <div className="simulated-time">
                   <span>Time: </span>
                   {formatSimulatedTimeForDisplay(simulatedTime)}

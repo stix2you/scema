@@ -91,6 +91,7 @@ self.addEventListener('message', (event) => {
          icon: '/logo192.png',
          badge: '/logo512.png',
       };
+      console.log('Showing notification:', title, options);
       self.registration.showNotification(title || 'Test Title', options);
    }
 });

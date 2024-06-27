@@ -53,7 +53,13 @@ function App() {
    };
 
    const requestNotificationPermission = async () => {
+      console.log('Requesting notification permission...');
+      const currentPermission = Notification.permission;
+      console.log('Current notification permission:', currentPermission);
+
       const permission = await Notification.requestPermission();
+      console.log('Requested notification permission:', permission);
+
       if (permission === 'granted') {
          console.log('Notification permission granted.');
       } else {
@@ -64,6 +70,8 @@ function App() {
 
    const sendTestNotification = async () => {
       const permission = Notification.permission;
+      console.log('Notification permission before sending test notification:', permission);
+
       if (permission === 'default') {
          const result = await requestNotificationPermission();
          if (result === 'granted') {
@@ -92,7 +100,7 @@ function App() {
       <Router>
          <div className="App">
             <header className="App-header">
-               <h1 onClick={handleTitleClick}>SCEMA</h1>
+               <h1 onClick={handleTitleClick}>CEMA</h1>
                <div className="simulated-time">
                   <span>Time: </span>
                   {formatSimulatedTimeForDisplay(simulatedTime)}

@@ -88,9 +88,17 @@ self.addEventListener('message', (event) => {
       const { title, body } = event.data;
       const options = {
          body: body || 'Test body',
-         icon: '/icon-192x192.png',
-         badge: '/badge-72x72.png',
+         icon: '/logo192.png',
+         badge: '/logo512.png',
       };
-      self.registration.showNotification(title || 'Test Title', options);
+      console.log('Showing notification:', title, options);
+      self.registration.showNotification(title || 'Test Title', options)
+         .then(() => {
+            console.log('Notification displayed successfully.');
+         })
+         .catch((error) => {
+            console.error('Error displaying notification:', error);
+         });
    }
 });
+
